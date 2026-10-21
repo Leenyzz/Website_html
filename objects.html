@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Предметы вероятности — Исследование вероятностей</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Poppins', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f7f6;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: #0000ff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .nav-container {
+      max-width: 1700px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      max-height: 45px;
+      text-decoration: none;
+    }
+
+    .logo img {
+      max-height: 40px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .nav-menu {
+      list-style: none;
+      display: flex;
+      gap: 15px;
+    }
+
+    .nav-item a {
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 14px;
+      border-radius: 20px;
+      transition: all 0.3s ease;
+      font-size: 12.5px;
+    }
+
+    /* Неоново-голубое свечение активного пункта меню */
+    .nav-item a.active {
+      color: #00f3ff;
+      text-shadow: 0 0 8px #00f3ff, 0 0 20px #00f3ff;
+    }
+      .nav-menu {
+      padding: 0;
+      margin: 0;
+    }
+
+    .nav-item {
+      margin-bottom: 0;
+    }
+
+    .nav-item a:hover {
+      color: #00f3ff;
+    }
+
+    /* Кнопка «Наверх» */
+    #scroll {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      width: 45px;
+      height: 45px;
+      background-color: #d1d5db;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      z-index: 9999;
+    }
+
+    #scroll:hover {
+      background-color: #9ca3af;
+    }
+
+    /* Белые блоки с содержимым */
+    main,
+    .content-box {
+      max-width: 900px;
+      margin: 30px auto;
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    h1,
+    h2 {
+      color: #2575fc;
+      margin-bottom: 15px;
+    }
+
+    h3 {
+      color: #1e3a8a;
+      margin: 15px 0 8px;
+    }
+
+    p {
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    a {
+      color: #2575fc;
+    }
+
+    /* Навигация по разделам страницы */
+    .page-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .page-nav a {
+      background: #eef2ff;
+      color: #1e3a8a;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 500;
+      transition: background-color 0.3s ease;
+    }
+
+    .page-nav a:hover {
+      background: #2575fc;
+      color: #ffffff;
+    }
+
+    /* Списки */
+    ol,
+    ul {
+      padding-left: 25px;
+      margin: 10px 0;
+      color: #333;
+    }
+
+    li {
+      margin-bottom: 6px;
+    }
+
+    ul ul {
+      list-style-type: circle;
+      margin-top: 5px;
+    }
+
+    /* Объекты с пояснениями */
+    figure {
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    figure img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    figcaption {
+      margin-top: 10px;
+      font-size: 0.95rem;
+      color: #1e3a8a;
+      font-weight: 500;
+    }
+
+    .comment {
+      background: #eef2ff;
+      border-left: 5px solid #2575fc;
+      border-radius: 4px;
+      padding: 15px 20px;
+      text-align: left;
+      margin-top: 10px;
+    }
+
+    .comment p {
+      color: #1e3a8a;
+      margin: 0;
+    }
+
+    /* Таблицы */
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 15px;
+    }
+
+    th,
+    td {
+      border: 1px solid #d1d5db;
+      padding: 12px;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    th {
+      background-color: #2575fc;
+      color: #ffffff;
+    }
+
+    /* Миниатюры (ссылки на большое изображение) */
+    .thumb {
+      width: 100px;
+      height: auto;
+      border-radius: 6px;
+      border: 2px solid #2575fc;
+      transition: transform 0.3s ease;
+    }
+
+    .thumb:hover {
+      transform: scale(1.08);
+    }
+
+    /* Таблица с изображением на заднем фоне */
+    .bg-table {
+      background-image: url('Standard.jpeg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .bg-table td,
+    .bg-table th {
+      background-color: rgba(255, 255, 255, 0.55);
+    }
+
+    .bg-table th {
+      background-color: rgba(37, 117, 252, 0.9);
+    }
+
+    .bg-table img.cell-img {
+      width: 120px;
+      height: auto;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+
+<body id="top">
+
+  <header>
+    <div class="nav-container">
+      <a href="https://imdvor.ru/blog/drevniy-talisman-kak-chetyryekhlistnyy-klever-stal-simvolom-udachi/" class="logo"><img src="6614730699354611.png" alt="Логотип"></a>
+      <ul class="nav-menu">
+        <li class="nav-item"><a href="index.html">Главная</a></li>
+        <li class="nav-item"><a href="index.html#prob">Что такое вероятность</a></li>
+         <li class="nav-item"><a href="zakon.html">Закон БЧ</a></li>
+        <li class="nav-item"><a href="probability_analysis.html">Анализ вероятностей</a></li>
+          <li class="nav-item"><a href="task_solution.html">Решение задачи</a></li>
+        <li class="nav-item"><a href="objects.html" class="active">Предметы вероятности</a></li>
+        <li class="nav-item"><a href="passport1.html">DOM_JS. Считываем информацию из DOM</a></li>
+        <li class="nav-item"><a href="passport2.html">Изменяем кириллицу на латиницу по клику</a></li>
+        <li class="nav-item"><a href="https://daily.hse.ru/post/stecenie-obstoyatelstv-ili-gramotnyi-nastroi-cto-takoe-udaca" target="_blank">Удача: вероятности в жизни</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <h1>Предметы, связанные с вероятностью</h1>
+    <p>На этой странице собраны реальные объекты, в работе которых случайность играет ключевую роль: от квантового компьютера до обычных игральных кубиков. Выберите раздел:</p>
+    <!-- Навигация по закладкам внутри страницы -->
+    <nav class="page-nav">
+      <a href="#section1">Раздел 1. Квантовый компьютер</a>
+      <a href="#section2">Раздел 2. Игральные кубики</a>
+      <a href="#section3">Раздел 3. Визуализация</a>
+      <a href="#section4">Раздел 4. Сводная таблица</a>
+
+    </nav>
+  </main>
+
+
+  <div class="content-box" id="section1">
+    <h2>Раздел 1. Квантовый компьютер</h2>
+    <figure>
+      <img src="quantum.jpg" alt="Квантовый компьютер" width="600" height="400">
+      <figcaption>Рис. 1. Квантовый компьютер</figcaption>
+    </figure>
+    <div class="comment">
+      <p><strong>Как он работает.</strong> Обычный бит принимает значение 0 или 1. Кубит находится в суперпозиции: до измерения у него есть вероятность оказаться в состоянии 0 и вероятность оказаться в состоянии 1. Квантовые алгоритмы подбирают операции так, чтобы вероятность правильного ответа росла, а неправильных падала. Результат измерения всё равно случаен, поэтому вычисление повторяют много раз (закон больших чисел) и берут наиболее частый ответ.</p>
+    </div>
+
+    <h3>Что важно знать о квантовых вычислениях</h3>
+    <ol>
+      <li>Кубит
+        <ul>
+          <li>хранит амплитуды вероятности двух состояний;</li>
+          <li>при измерении даёт 0 или 1.</li>
+        </ul>
+      </li>
+      <li>Суперпозиция и запутанность
+        <ul>
+          <li>суперпозиция: сочетание состояний сразу;</li>
+          <li>запутанность: связь результатов разных кубитов.</li>
+        </ul>
+      </li>
+      <li>Применение
+        <ul>
+          <li>моделирование молекул и лекарств;</li>
+          <li>криптография;</li>
+          <li>оптимизация сложных задач.</li>
+        </ul>
+      </li>
+    </ol>
+  </div>
+
+  <!-- РАЗДЕЛ 2 -->
+  <div class="content-box" id="section2">
+    <h2>Раздел 2. Игральные кубики</h2>
+    <figure>
+      <img src="dice.jpg" alt="Игральные кубики" width="600" height="400">
+      <figcaption>Рис. 2. Игральные кубики</figcaption>
+    </figure>
+    <div class="comment">
+      <p><strong>Как они работают.</strong> У честного кубика шесть граней, и вероятность выпадения каждой равна 1/6. Бросок одного кубика не зависит от предыдущих. Если бросать два кубика, сумма очков распределяется неравномерно: сумма 7 выпадает чаще всего (6 способов из 36, то есть 1/6), а суммы 2 и 12 только по одному способу (1/36).</p>
+    </div>
+
+    <h3>Свойства честного кубика</h3>
+    <ul>
+      <li>Все грани равновероятны
+        <ul>
+          <li>вероятность каждой грани: 1/6 ≈ 16,7 %;</li>
+          <li>среднее значение: 3,5.</li>
+        </ul>
+      </li>
+      <li>Броски независимы
+        <ul>
+          <li>прошлые результаты не влияют на следующий;</li>
+          <li>«серия» шестёрок не делает семёрку ближе.</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <!-- РАЗДЕЛ 3: миниатюра -> большое изображение в новой вкладке -->
+  <div class="content-box" id="section3">
+    <h2>Раздел 3. Подробная визуализация</h2>
+    <table>
+      <tr>
+        <th>Миниатюра</th>
+        <th>Описание</th>
+      </tr>
+      <tr>
+        <td>
+          <a href="coin600400.jpg" target="_blank" rel="noopener" title="Открыть в новой вкладке">
+            <img class="thumb" src="coin.jpg" alt="Монета (миниатюра)" width="100">
+          </a>
+        </td>
+        <td>Монета: классический пример случайного эксперимента с двумя равновероятными исходами (орёл и решка).</td>
+      </tr>
+      <tr>
+        <td>
+          <a href="quantum600400.jpg" target="_blank" rel="noopener" title="Открыть в новой вкладке">
+            <img class="thumb" src="quantum.jpg" alt="Квантовый компьютер (миниатюра)" width="100">
+          </a>
+        </td>
+        <td>Квантовый компьютер: вероятностный характер результата измерения кубита.</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- РАЗДЕЛ 4: таблица с фоновым изображением -->
+  <div class="content-box" id="section4">
+    <h2>Раздел 4. Сводная таблица предметов</h2>
+    <table class="bg-table">
+      <tr>
+        <th>Предмет</th>
+        <th>Изображение</th>
+        <th>Вероятностная идея</th>
+        <th>Подробнее</th>
+      </tr>
+      <tr>
+        <td>Игральный кубик</td>
+        <td><img class="cell-img" src="dice.jpg" alt="Игральный кубик"></td>
+        <td>Шесть равновероятных исходов, вероятность каждого 1/6</td>
+        <td><a href="https://ru.wikipedia.org/wiki/Игральная_кость" target="_blank" rel="noopener">Википедия</a></td>
+      </tr>
+      <tr>
+        <td>Монета</td>
+        <td><a href="coin.jpg" target="_blank" rel="noopener"><img class="cell-img" src="coin.jpg" alt="Монета"></a></td>
+        <td>Два исхода по 1/2, закон больших чисел</td>
+        <td><a href="https://ru.wikipedia.org/wiki/Закон_больших_чисел" target="_blank" rel="noopener">Википедия</a></td>
+      </tr>
+      <tr>
+        <td>Квантовый компьютер</td>
+        <td><img class="cell-img" src="quantum.jpg" alt="Квантовый компьютер"></td>
+        <td>Суперпозиция и вероятности измерения кубита</td>
+        <td><a href="https://ru.wikipedia.org/wiki/Квантовый_компьютер" target="_blank" rel="noopener">Википедия</a></td>
+      </tr>
+    </table>
+  </div>
+
+  <a href="#top" id="scroll" title="Наверх">↑</a>
+
+</body>
+
+</html>

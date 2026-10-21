@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DOM_JS. Считываем информацию из DOM — Исследование вероятностей</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Poppins', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f7f6;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: #0000ff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .nav-container {
+      max-width: 1700px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      max-height: 45px;
+      text-decoration: none;
+    }
+
+    .logo img {
+      max-height: 40px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .nav-menu {
+      list-style: none;
+      display: flex;
+      gap: 15px;
+    }
+
+    .nav-item a {
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 14px;
+      border-radius: 20px;
+      transition: all 0.3s ease;
+      font-size: 12.5px;
+
+    }
+    .nav-item {
+  margin-bottom: 0;
+}
+
+    .nav-item a.active {
+      color: #00f3ff;
+      background-color: transparent;
+      box-shadow: none;
+      text-shadow: 0 0 8px #00f3ff, 0 0 20px #00f3ff;
+    }
+
+    .nav-item a:hover {
+      color: #00f3ff;
+    }
+
+    #scroll {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      width: 45px;
+      height: 45px;
+      background-color: #d1d5db;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      z-index: 9999;
+    }
+
+    #scroll:hover {
+      background-color: #9ca3af;
+    }
+
+    main,
+    .content-box {
+      max-width: 900px;
+      margin: 30px auto;
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    h1,
+    h2 {
+      color: #2575fc;
+      margin-bottom: 15px;
+    }
+
+    h3 {
+      color: #1e3a8a;
+      margin: 15px 0 8px;
+    }
+
+    p {
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    code {
+      background: #eef2ff;
+      color: #1e3a8a;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+
+    ol {
+      padding-left: 25px;
+      margin: 10px 0;
+      color: #333;
+    }
+
+    li {
+      margin-bottom: 6px;
+    }
+
+    figure {
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    figcaption {
+      margin-top: 10px;
+      font-size: 0.95rem;
+      color: #1e3a8a;
+      font-weight: 500;
+    }
+
+    /* ===== Паспорт: картинка + текст поверх неё ===== */
+    .passport {
+      position: relative;
+      width: 100%;
+      max-width: 560px;
+      margin: 0 auto;
+      container-type: inline-size;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .passport img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    /* Координаты заданы в пикселях исходной картинки (330 x 457) */
+    .passport .ov {
+      position: absolute;
+      left: calc(var(--x) / 330 * 100%);
+      top: calc(var(--y) / 457 * 100%);
+      width: calc(var(--w) / 330 * 100%);
+      height: calc(var(--h) / 457 * 100%);
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+      background: #f6e8e8;
+      color: #23232e;
+      font-family: 'Courier New', Courier, monospace;
+      font-weight: bold;
+      font-size: 3.5cqw;
+      letter-spacing: 0.02em;
+    }
+
+    .ov.surname    { --x: 156; --y: 251; --w: 62;  --h: 14; }
+    .ov.name       { --x: 164; --y: 287; --w: 56;  --h: 14; }
+    .ov.bdate      { --x: 193; --y: 323; --w: 73;  --h: 14; }
+    .ov.patronymic { --x: 144; --y: 304; --w: 96;  --h: 15; }
+    .ov.place      { --x: 138; --y: 341; --w: 116; --h: 15; }
+
+    /* ===== Кнопка и результат ===== */
+    button {
+      background-color: #2575fc;
+      color: #ffffff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 15px;
+    }
+
+    button:hover {
+      background-color: #1e3a8a;
+    }
+
+    #result-box {
+      margin-top: 25px;
+      padding: 20px;
+      background-color: #eef2ff;
+      border-left: 5px solid #2575fc;
+      border-radius: 4px;
+      display: none;
+    }
+
+    #result-box h3 {
+      color: #1e3a8a;
+      margin: 0 0 8px;
+    }
+
+    #result-box p {
+      color: #1e3a8a;
+      margin-bottom: 4px;
+    }
+
+    .shot img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .shot .placeholder {
+      border: 2px dashed #2575fc;
+      border-radius: 8px;
+      padding: 30px 20px;
+      color: #1e3a8a;
+      background: #eef2ff;
+    }
+
+    @media (max-width: 800px) {
+      .nav-container { flex-direction: column; gap: 10px; }
+      .nav-menu { flex-wrap: wrap; justify-content: center; }
+      main, .content-box { margin: 20px 12px; padding: 25px 18px; }
+    }
+  </style>
+</head>
+
+<body id="top">
+
+  <header>
+    <div class="nav-container">
+      <a href="https://imdvor.ru/blog/drevniy-talisman-kak-chetyryekhlistnyy-klever-stal-simvolom-udachi/" class="logo"><img src="6614730699354611.png" alt="Логотип"></a>
+      <ul class="nav-menu">
+        <li class="nav-item"><a href="index.html">Главная</a></li>
+        <li class="nav-item"><a href="index.html#prob">Что такое вероятность</a></li>
+         <li class="nav-item"><a href="zakon.html">Закон БЧ</a></li>
+        <li class="nav-item"><a href="probability_analysis.html">Анализ вероятностей</a></li>
+        <li class="nav-item"><a href="task_solution.html">Решение задачи</a></li>
+        <li class="nav-item"><a href="objects.html">Предметы вероятности</a></li>
+        <li class="nav-item"><a href="passport1.html" class="active">DOM_JS. Считываем информацию из DOM</a></li>
+        <li class="nav-item"><a href="passport2.html">Изменяем кириллицу на латиницу по клику</a></li>
+        <li class="nav-item"><a href="https://daily.hse.ru/post/stecenie-obstoyatelstv-ili-gramotnyi-nastroi-cto-takoe-udaca" target="_blank">Удача: вероятности в жизни</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <h1>DOM_JS. Считываем информацию из DOM</h1>
+
+
+    <figure>
+      <div class="passport" id="passport">
+        <img src="Pasport_RF.jpg" alt="Вторая и третья страницы паспорта" width="330" height="457">
+
+        <p class="ov surname"><span hidden>Фамилия: </span><span>Певзнер</span></p>
+        <p class="ov name"><span hidden>Имя: </span><span>Лев</span></p>
+        <p class="ov bdate">15.08.<span>2007</span></p>
+        <p class="ov patronymic"><span hidden>Отчество: </span><span>Альбертович</span></p>
+        <p class="ov place"><span hidden>Место рождения: </span><span>ГОР. МОСКВА</span></p>
+      </div>
+      <figcaption>Рис. 1. Вторая и третья страницы паспорта</figcaption>
+    </figure>
+
+
+    </ol>
+  </div>
+
+  <div class="content-box shot">
+    <h2>Скриншот экрана браузера</h2>
+    <figure>
+      <img src="img.png"></div>
+      <figcaption>Рис. 2. Получение фамилии, имени и года рождения из DOM в консоли</figcaption>
+    </figure>
+  </div>
+
+  <a href="#top" id="scroll" title="Наверх">↑</a>
+
+
+</body>
+
+</html>

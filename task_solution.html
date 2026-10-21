@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Решение задачи — Исследование вероятностей</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f7f6;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: #0000ff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .nav-container {
+      max-width: 1700px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      max-height: 45px;
+      text-decoration: none;
+    }
+
+    .logo img {
+      max-height: 40px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .nav-menu {
+      list-style: none;
+      display: flex;
+      gap: 15px;
+    }
+
+    .nav-item a {
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 14px;
+      border-radius: 20px;
+      transition: all 0.3s ease;
+      font-size: 12.5px;
+    }
+#scroll:hover { background-color: #9ca3af; }
+    .nav-item a.active {
+      color: #00f3ff;
+      background-color: transparent;
+      box-shadow: none;
+      text-shadow: 0 0 8px #00f3ff, 0 0 20px #00f3ff;
+    }
+
+    .nav-item a:hover {
+      color: #00f3ff;
+    }
+
+    #scroll {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      width: 45px;
+      height: 45px;
+      background-color: #d1d5db;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      z-index: 9999;
+    }
+
+
+    main {
+      max-width: 900px;
+      margin: 40px auto;
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    h1 {
+      color: #2575fc;
+      margin-bottom: 15px;
+    }
+
+    p {
+      color: #666;
+    }
+
+    label {
+      display: block;
+      margin-top: 20px;
+      font-weight: bold;
+      color: #1e3a8a;
+    }
+
+    input[type="number"] {
+      padding: 8px 10px;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+      margin-top: 6px;
+      width: 100%;
+      max-width: 320px;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: #2575fc;
+      color: #ffffff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 15px;
+    }
+    .nav-item a.active {
+  color: #00f3ff;
+  background-color: transparent;
+  box-shadow: none;
+  text-shadow: 0 0 8px #00f3ff, 0 0 20px #00f3ff;
+}
+
+    button:hover {
+      background-color: #1e3a8a;
+    }
+    html { scrollbar-gutter: stable; }
+
+    #result-box {
+      margin-top: 25px;
+      padding: 20px;
+      background-color: #eef2ff;
+      border-left: 5px solid #2575fc;
+      border-radius: 4px;
+      display: none;
+    }
+
+    #result-box h3 {
+      color: #1e3a8a;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+
+<body id="top">
+
+  <header>
+    <div class="nav-container">
+      <a href="https://imdvor.ru/blog/drevniy-talisman-kak-chetyryekhlistnyy-klever-stal-simvolom-udachi/" class="logo"><img src="6614730699354611.png" alt="Логотип"></a>
+      <ul class="nav-menu">
+        <li class="nav-item"><a href="index.html">Главная</a></li>
+        <li class="nav-item"><a href="index.html#prob">Что такое вероятность</a></li>
+         <li class="nav-item"><a href="zakon.html">Закон БЧ</a></li>
+        <li class="nav-item"><a href="probability_analysis.html">Анализ вероятностей</a></li>
+        <li class="nav-item"><a href="task_solution.html" class="active">Решение задачи</a></li>
+        <li class="nav-item"><a href="objects.html">Предметы вероятности</a></li>
+        <li class="nav-item"><a href="passport1.html">DOM_JS. Считываем информацию из DOM</a></li>
+        <li class="nav-item"><a href="passport2.html">Изменяем кириллицу на латиницу по клику</a></li>
+        <li class="nav-item"><a href="https://daily.hse.ru/post/stecenie-obstoyatelstv-ili-gramotnyi-nastroi-cto-takoe-udaca" target="_blank">Удача: вероятности в жизни</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <h1>Решение алгоритмической задачи 1018</h1>
+    <p>Известен год. Определить, будет ли этот год високосным, и к какому веку он относится.</p>
+
+    <label for="year">Введите год:</label>
+    <input type="number" id="year" min="1" step="1" placeholder="Например, 2024">
+    <br>
+    <button type="button" onclick="solve()">Определить</button>
+
+    <div id="result-box">
+      <h3>Результат:</h3>
+      <p id="result-text"></p>
+    </div>
+  </main>
+
+  <a href="#top" id="scroll" title="Наверх">↑</a>
+
+  <script>
+    function solve() {
+      const year = parseInt(document.getElementById('year').value);
+      const resultBox = document.getElementById('result-box');
+      const resultText = document.getElementById('result-text');
+
+      resultBox.style.display = 'block';
+
+      if (isNaN(year) || year < 1) {
+        resultText.innerHTML = 'Пожалуйста, введите целое положительное число.';
+        return;
+      }
+
+      const isLeap = (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+
+      const century = Math.ceil(year / 100);
+
+      resultText.innerHTML =
+        `Год <strong>${year}</strong> — <strong>${isLeap ? 'високосный' : 'не високосный'}</strong>.<br>` +
+        `Он относится к <strong>${century}</strong> веку.`;
+    }
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Исследование вероятностей</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f7f6;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: #0000ff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .nav-container {
+      max-width: 1700px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      max-height: 45px;
+    }
+
+    .logo img {
+      max-height: 40px;
+      width: auto;
+      object-fit: contain;
+    }
+#scroll:hover { background-color: #9ca3af; }
+    .nav-menu {
+      list-style: none;
+      display: flex;
+      gap: 15px;
+    }
+
+    .nav-item a {
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 14px;
+      border-radius: 20px;
+      transition: all 0.3s ease;
+      font-size: 12.5px;
+    }
+    .nav-item a.active {
+  color: #00f3ff;
+  background-color: transparent;
+  box-shadow: none;
+  text-shadow: 0 0 8px #00f3ff, 0 0 20px #00f3ff;
+}
+    .nav-item a:hover {
+      color: #00f3ff;
+    }
+    #scroll {
+  position: fixed;
+ bottom: 25px;
+  right: 25px;
+  width: 45px;
+  height: 45px;
+  background-color: #d1d5db;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  z-index: 9999;
+}
+.probsph {
+  list-style-type: disc;
+  color: #2575fc;
+  font-family: 'Poppins', Tahoma, Geneva, Verdana, sans-serif;
+  padding-left: 20px;
+  margin: 20px 0;
+}
+
+.probsph > li {
+  margin-bottom: 15px;
+  line-height: 1.6;
+}
+
+.probsph > li > strong {
+  color: #2575fc;
+  font-size: 1.05rem;
+}
+
+.probsph ul {
+  list-style-type: circle;
+  padding-left: 20px;
+  margin-top: 5px;
+}
+
+.probsph ul li {
+  color: #333;
+  margin-bottom: 5px;
+  font-size: 0.95rem;
+}
+
+.probsph ul li span {
+  color: #666;
+}
+
+
+    main {
+      max-width: 900px;
+      margin: 40px auto;
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+    .content-box {
+  max-width: 900px;           /* Такая же ширина, как у main */
+  margin: 30px auto;          /* 30px сверху и снизу создают тот самый отступ, auto выравнивает по центру */
+  background: #ffffff;        /* Белый фон прямоугольника */
+  padding: 40px;              /* Внутренние отступы от текста до краев */
+  border-radius: 12px;        /* Скругленные углы */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); /* Легкая тень */
+}
+
+    h1 {
+      color: #2575fc;
+      margin-bottom: 15px;
+    }
+
+
+
+    p {
+      color: #666;
+    }
+  </style>
+</head>
+
+
+<body>
+
+  <header>
+    <div class="nav-container">
+      <a href="https://imdvor.ru/blog/drevniy-talisman-kak-chetyryekhlistnyy-klever-stal-simvolom-udachi/" target="_self" class="logo"><img src="6614730699354611.png"></a>
+      <ul class="nav-menu">
+        <li class="nav-item"><a href="index.html" class="active">Главная</a></li>
+        <li class="nav-item"><a href="#prob">Что такое вероятность</a></li>
+         <li class="nav-item"><a href="zakon.html">Закон БЧ</a></li>
+        <li class="nav-item"><a href="probability_analysis.html">Анализ вероятностей</a></li>
+        <li class="nav-item"><a href="task_solution.html">Решение задачи</a></li>
+        <li class="nav-item"><a href="objects.html">Предметы вероятности</a></li>
+        <li class="nav-item"><a href="passport1.html">DOM_JS. Считываем информацию из DOM</a></li>
+         <li class="nav-item"><a href="passport2.html">Изменяем кириллицу на латиницу по клику</a></li>
+        <li class="nav-item"><a href="https://daily.hse.ru/post/stecenie-obstoyatelstv-ili-gramotnyi-nastroi-cto-takoe-udaca" target="_blank">Удача: вероятности в жизни</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <h1><span style="font-size: 25px;">Добро пожаловать на сайт «Исследование вероятностей»!</span></h1>
+    <p>Выберите интересующий вас раздел в верхнем меню, чтобы продолжить.</p>
+  </main>
+<div class="content-box">
+  <h1>О сайте</h1>
+  <p>Сайт представляет собой информационную систему, посвящённую глубокому изучению теории вероятностей, оценке рисков и их прямому влиянию на принятие решений в реальной жизни. Проект объединяет научные материалы о законах случайных величин, законе больших чисел и математическом ожидании для инструмента анализа вероятностей, которые задействованы в жизни человека. На сайте также имеется специальный интерактивный раздел, где пользователь с помощью различных инструментов может наглядно понять, как именно работают вероятностные механизмы. Здесь собрана исчерпывающая и полезная информация о фундаментальных законах вероятностей и разобраны способы использования этих знаний для извлечения выгод. В материалах описано, за счет каких математических принципов некоторые организации получают стабильный заработок, и почему человеческая интуиция так часто ошибается при оценке случайных событий.</p>
+</div>
+<div class="content-box">
+  <h1 id="prob">Что такое вероятность</h1>
+  <p>Вероятность — это математическая мера, которая позволяет количественно оценить шанс наступления определённого события в условиях неопределенности, случайности и неполноты информации. В то время как точные науки оперируют строгими абсолютными законами и гарантированными результатами, реальная человеческая жизнь со всеми её выборами, случайными факторами, рисками и переменными подчиняется именно законам вероятности.   Каждое принятое человеком решение — будь то осознанный выбор профессионального пути, рискованная инвестиция, спонтанный переезд или даже незначительный повседневный шаг — по сути является отдельной ставкой в сложной жизненной вероятностной модели. Понимание фундаментальных принципов теории вероятностей, таких как закон больших чисел, особенности распределения рисков и глубокая оценка потенциальных исходов, кардинально меняет подход к принятию решений. Это позволяет человеку перестать воспринимать неудачи как злой рок или фатализм, увидев в них закономерные статистические отклонения, а также научиться эффективно минимизировать возможные потери и уверенно управлять неопределенностью. Особое место в научной базе теории вероятностей занимают законы больших чисел и центральная предельная теорема. Именно эти математические законы доказывают, что при многократном повторении случайного эксперимента хаотичность отдельных исходов сглаживается, и суммарный результат начинает подчиняться строгой статистической закономерности с предсказуемым средним значением. Это позволяет ученым, исследователям и аналитикам моделировать сложные процессы в физике, экономике, биологии и социологии, превращая неопределенность в измеримую и управляемую научную категорию.</p>
+</div>
+<a href="#" id="scroll" title="Наверх">↑</a>
+  <div class="content-box">
+<ol style="list-style-type: decimal; padding-left: 20px; color: #333; font-family: 'Poppins', Tahoma, Geneva, Verdana, sans-serif;">
+  <li style="margin-bottom: 15px; line-height: 1.6;">
+    <strong style="color: #2575fc; font-size: 1.05rem;">Закон больших чисел</strong>
+    <p style="color: #666; margin: 5px 0 0 0; font-size: 0.95rem;">Утверждает, что суммарный результат большого количества независимых случайных экспериментов предсказуем с высокой точностью.</p>
+  </li>
+  <li style="margin-bottom: 15px; line-height: 1.6;">
+    <strong style="color: #2575fc; font-size: 1.05rem;">Центральная предельная теорема</strong>
+    <p style="color: #666; margin: 5px 0 0 0; font-size: 0.95rem;">Фундаментальный закон, согласно которому сумма большого числа независимых случайных величин имеет распределение, близкое к нормальному.</p>
+  </li>
+  <li style="margin-bottom: 15px; line-height: 1.6;">
+    <strong style="color: #2575fc; font-size: 1.05rem;">Закон больших чисел Бернулли</strong>
+    <p style="color: #666; margin: 5px 0 0 0; font-size: 0.95rem;">Частный случай, доказывающий, что при многократном повторении испытаний относительная частота события стремится к его истинной вероятности.</p>
+  </li>
+  <li style="margin-bottom: 15px; line-height: 1.6;">
+    <strong style="color: #2575fc; font-size: 1.05rem;">Теорема Байеса</strong>
+    <p style="color: #666; margin: 5px 0 0 0; font-size: 0.95rem;">Закон условной вероятности, позволяющий пересчитывать степень доверия к гипотезе по мере поступления новой информации.</p>
+  </li>
+  <li style="margin-bottom: 15px; line-height: 1.6;">
+    <strong style="color: #2575fc; font-size: 1.05rem;">Закон дистрибутивности вероятностей</strong>
+    <p style="color: #666; margin: 5px 0 0 0; font-size: 0.95rem;">Правило сложения вероятностей для несовместных событий.</p>
+  </li>
+</ol>
+  </div>
+    <div class="content-box">
+<ul class="probsph">
+  <li>
+    <strong>Финансы, страхование и инвестиции</strong>
+    <ul>
+      <li><span>Оценка кредитных рисков и вероятности дефолта заемщиков.</span></li>
+      <li><span>Управление инвестиционным портфелем и моделирование волатильности ценных бумаг.</span></li>
+      <li><span>Актуарные расчеты в страховании жизни, имущества и рисков.</span></li>
+    </ul>
+  </li>
+
+  <li>
+    <strong>Информационные технологии, Data Science и ИИ</strong>
+    <ul>
+      <li><span>Алгоритмы машинного обучения, классификации данных и нейросети (байесовские классификаторы).</span></li>
+      <li><span>Тестирование программного обеспечения (A/B тестирование, анализ нагрузки на сервера).</span></li>
+      <li><span>Кибербезопасность (криптография и обнаружение аномалий в сетевом трафике).</span></li>
+    </ul>
+  </li>
+
+  <li>
+    <strong>Телекоммуникации и азартные развлечения</strong>
+    <ul>
+      <li><span>Распределение пропускной способности каналов связи и сотовых сетей.</span></li>
+      <li><span>Расчёт выгодных для бизнеса схем и коэффициентов.</span></li>
+    </ul>
+  </li>
+
+  <li>
+    <strong>Промышленность и контроль качества</strong>
+    <ul>
+      <li><span>Статистический контроль качества продукции на производстве (выборочная проверка деталей).</span></li>
+      <li><span>Прогнозирование износа оборудования и планирование профилактического обслуживания.</span></li>
+    </ul>
+  </li>
+
+  <li>
+    <strong>Естественные и социальные науки</strong>
+    <ul>
+      <li><span>Квантовая механика и статистическая физика (поведение частиц).</span></li>
+      <li><span>Медицинские и клинические исследования (оценка эффективности лекарств, эпидемиология).</span></li>
+      <li><span>Социологические опросы и демографическое прогнозирование.</span></li>
+    </ul>
+  </li>
+</ul>
+      </div>
+
+
+</body>
+
+</html>

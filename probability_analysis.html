@@ -1,0 +1,479 @@
+
+<!doctype html>
+<html lang="ru">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Анализ вероятностей — Исследование вероятностей</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f7f6;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: #0000ff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .nav-container {
+      max-width: 1700px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      max-height: 45px;
+      text-decoration: none;
+    }
+
+    .logo img {
+      max-height: 40px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .nav-menu {
+      list-style: none;
+      display: flex;
+      gap: 15px;
+    }
+
+    .nav-item a {
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 14px;
+      border-radius: 20px;
+      transition: all 0.3s ease;
+      font-size: 12.5px;
+    }
+#scroll:hover { background-color: #9ca3af; }
+    /* Неоново-голубое свечение активного пункта меню */
+    .nav-item a.active {
+      color: #00f3ff;
+      background-color: transparent;
+      box-shadow: none;
+      text-shadow: 0 0 8px #00f3ff, 0 0 20px #00f3ff;
+    }
+
+    .nav-item a:hover {
+      color: #00f3ff;
+    }
+
+    #scroll {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      width: 45px;
+      height: 45px;
+      background-color: #d1d5db;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      z-index: 9999;
+    }
+
+    #scroll:hover {
+      background-color: #9ca3af;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 40px auto;
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    h1 {
+      color: #2575fc;
+      margin-bottom: 15px;
+    }
+
+    p {
+      color: #666;
+    }
+
+    fieldset {
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+
+    legend {
+      font-weight: bold;
+      color: #1e3a8a;
+      padding: 0 10px;
+    }
+
+    label {
+      cursor: pointer;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    input[type="password"],
+    select {
+      padding: 6px 10px;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+      margin-top: 4px;
+      width: 100%;
+      max-width: 320px;
+    }
+
+    button[type="button"] {
+      background-color: #2575fc;
+      color: #ffffff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 15px;
+    }
+
+    button[type="button"]:hover {
+      background-color: #1e3a8a;
+    }
+
+    #result-box {
+      margin-top: 25px;
+      padding: 20px;
+      background-color: #eef2ff;
+      border-left: 5px solid #2575fc;
+      border-radius: 4px;
+      display: none;
+    }
+
+    #result-box h3 {
+      color: #1e3a8a;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+
+<body id="top">
+
+  <header>
+    <div class="nav-container">
+      <a href="https://imdvor.ru/blog/drevniy-talisman-kak-chetyryekhlistnyy-klever-stal-simvolom-udachi/" class="logo"><img src="6614730699354611.png" alt="Логотип"></a>
+      <ul class="nav-menu">
+        <li class="nav-item"><a href="index.html">Главная</a></li>
+        <li class="nav-item"><a href="index.html#prob">Что такое вероятность</a></li>
+         <li class="nav-item"><a href="zakon.html">Закон БЧ</a></li>
+        <li class="nav-item"><a href="probability_analysis.html" class="active">Анализ вероятностей</a></li>
+        <li class="nav-item"><a href="task_solution.html">Решение задачи</a></li>
+        <li class="nav-item"><a href="objects.html">Предметы вероятности</a></li>
+        <li class="nav-item"><a href="passport1.html">DOM_JS. Считываем информацию из DOM</a></li>
+        <li class="nav-item"><a href="passport2.html">Изменяем кириллицу на латиницу по клику</a></li>
+        <li class="nav-item"><a href="https://daily.hse.ru/post/stecenie-obstoyatelstv-ili-gramotnyi-nastroi-cto-takoe-udaca" target="_blank">Удача: вероятности в жизни</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <h1>Анализ вероятностей и расчет уровня счастья</h1>
+
+
+<style>
+  .draw-box { margin-top: 30px; }
+  .draw-box h2 { color: #2575fc; margin-bottom: 10px; }
+  .draw-info {
+    background-color: #eef2ff;
+    border-left: 5px solid #2575fc;
+    border-radius: 4px;
+    padding: 15px 20px;
+    margin-bottom: 15px;
+  }
+  .draw-info p { color: #1e3a8a; }
+  .draw-box input[type="email"],
+  .draw-box input[type="tel"] {
+    padding: 6px 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    margin-top: 4px;
+    width: 100%;
+    max-width: 320px;
+  }
+  .draw-box .consent { display: block; margin-top: 15px; color: #666; font-size: 0.95rem; }
+  .draw-box button[type="submit"] {
+    background-color: #2575fc;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 15px;
+  }
+  .draw-box button[type="submit"]:hover { background-color: #1e3a8a; }
+  .draw-box button[type="submit"]:disabled { background-color: #9ca3af; cursor: default; }
+  #draw-status { margin-top: 15px; padding: 12px 16px; border-radius: 4px; display: none; }
+  #draw-status.ok { display: block; background: #e8f7ee; border-left: 5px solid #1f9d55; color: #14653a; }
+  #draw-status.err { display: block; background: #fdecec; border-left: 5px solid #d93025; color: #8a1c14; }
+</style>
+
+<section class="draw-box">
+  <h2>Еженедельный розыгрыш</h2>
+  <div class="draw-info">
+    <p>Каждую неделю на сайте проходит розыгрыш, в котором случайным образом выбираются 10 победителей.</p>
+  </div>
+
+  <form id="drawForm" novalidate>
+    <fieldset>
+      <legend>Контактные данные участника</legend>
+
+      <label>Фамилия: <br><input type="text" name="lastname" required></label><br><br>
+      <label>Имя: <br><input type="text" name="firstname" required></label><br><br>
+      <label>Группа: <br><input type="text" name="group" required></label><br><br>
+      <label>Мобильный телефон: <br><input type="tel" name="phone" required placeholder="+7 (900) 000-00-00"></label><br><br>
+      <label>Электронная почта: <br><input type="email" name="email" required placeholder="name@example.ru"></label><br><br>
+      <label>Дата отправки: <br><input type="date" name="send_date" id="send_date" readonly></label>
+
+      <label class="consent">
+        <input type="checkbox" id="consent" name="consent" required>
+        Я согласен(на) на обработку моих персональных данных для участия в розыгрыше
+      </label>
+    </fieldset>
+
+    <button type="submit" id="drawBtn">Отправить и участвовать</button>
+    <div id="draw-status" role="status"></div>
+  </form>
+</section>
+
+<script>
+  (function () {
+
+    const SERVER_URL = 'https://httpbin.org/post';
+
+    const form = document.getElementById('drawForm');
+    const btn = document.getElementById('drawBtn');
+    const status = document.getElementById('draw-status');
+
+    // Автоматически подставляем сегодняшнюю дату
+    const today = new Date();
+    const pad = n => String(n).padStart(2, '0');
+    document.getElementById('send_date').value =
+      today.getFullYear() + '-' + pad(today.getMonth() + 1) + '-' + pad(today.getDate());
+
+    function show(type, text) {
+      status.className = type;
+      status.textContent = text;
+    }
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const f = form.elements;
+
+      // Проверка полей
+      const required = ['lastname', 'firstname', 'group', 'phone', 'email'];
+      for (const name of required) {
+        if (!f[name].value.trim()) {
+          return show('err', 'Заполните все поля формы.');
+        }
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email.value.trim())) {
+        return show('err', 'Введите корректный адрес электронной почты.');
+      }
+      if (f.phone.value.replace(/\D/g, '').length < 10) {
+        return show('err', 'Введите корректный номер телефона.');
+      }
+      if (!f.consent.checked) {
+        return show('err', 'Необходимо согласие на обработку данных.');
+      }
+
+      const payload = {
+        lastname: f.lastname.value.trim(),
+        firstname: f.firstname.value.trim(),
+        group: f.group.value.trim(),
+        phone: f.phone.value.trim(),
+        email: f.email.value.trim(),
+        send_date: f.send_date.value
+      };
+
+      btn.disabled = true;
+      btn.textContent = 'Отправка...';
+      status.className = '';
+
+      try {
+        const response = await fetch(SERVER_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (!response.ok) throw new Error('HTTP ' + response.status);
+        show('ok', 'Спасибо! Данные отправлены, вы участвуете в ближайшем розыгрыше.');
+        form.reset();
+        document.getElementById('send_date').value =
+          today.getFullYear() + '-' + pad(today.getMonth() + 1) + '-' + pad(today.getDate());
+      } catch (err) {
+        show('err', 'Не удалось отправить данные. Попробуйте позже.');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Отправить и участвовать';
+      }
+    });
+  })();
+</script>
+
+
+
+      <form id="happyForm" novalidate>
+  <fieldset>
+    <legend>2. Параметры комплексной модели счастья</legend>
+
+    <label>Ваше имя: <br><input type="text" name="user_name" value="Аноним"></label><br><br>
+
+    <label>Ваш точный возраст (от 16 до 100 лет): <br>
+      <input type="number" id="age" name="age" min="16" max="100" value="25"></label><br><br>
+
+    <label>Дата опроса: <br><input type="date" id="survey_date" name="survey_date"></label><br><br>
+
+    <label><strong>Годовой доход домохозяйства:</strong></label><br>
+    <select id="income" name="income">
+      <option value="under_10k">Менее 10 000 $ в год</option>
+      <option value="10k_50k" selected>От 10 000 $ до 50 000 $ в год</option>
+      <option value="50k_100k">От 50 000 $ до 100 000 $ в год</option>
+      <option value="100k_200k">От 100 000 $ до 200 000 $ в год</option>
+      <option value="over_200k">Свыше 200 000 $ в год</option>
+    </select><br><br>
+
+    <label><strong>Наличие постоянного партнера / семьи:</strong></label><br>
+    <input type="radio" id="partner_yes" name="partner" value="yes" checked>
+    <label for="partner_yes">Есть постоянный партнер</label><br>
+    <input type="radio" id="partner_no" name="partner" value="no">
+    <label for="partner_no">Нет постоянного партнера</label><br><br>
+
+    <label><input type="checkbox" id="has_children" name="has_children" value="yes"> Есть дети</label><br><br>
+
+    <label>Пароль для просмотра результата: <br><input type="password" name="secret_key" value="12345"></label>
+    <input type="hidden" name="model_version" value="advanced_happiness_v2.0">
+    <input type="hidden" id="happiness_score" name="happiness_score" value="0">
+  </fieldset>
+
+  <button type="button" onclick="calculateAdvancedHappiness()">Запустить расчет модели</button>
+  <button type="submit" id="happyBtn">Отправить на сервер</button>
+  <div id="happy-status" role="status"></div>
+</form>
+
+
+
+    <div id="result-box">
+      <h3>Результат комплексного анализа:</h3>
+      <p id="result-text"></p>
+    </div>
+  </main>
+
+  <a href="#top" id="scroll" title="Наверх">↑</a>
+
+  <script>
+    // Точная функция оценки возраста (U-образная кривая счастья с шагом по каждому возрасту)
+    function getAgeCoefficient(age) {
+      if (age < 22) return 7.4; // Высокий уровень юношеского оптимизма
+      if (age >= 22 && age <= 30) return 7.0; // Период адаптации и карьерного старта
+      if (age >= 31 && age <= 39) return 6.5; // Накопление обязательств
+      if (age >= 40 && age <= 50) return 5.7; // Исторический минимум (кризис среднего возраста по данным исследований)
+      if (age >= 51 && age <= 60) return 6.3; // Плавное восстановление
+      if (age >= 61 && age <= 70) return 7.2; // Рост удовлетворенности на пенсионерском этапе
+      return 7.5; // Возраст 71+ (стабильно высокий уровень субъективного благополучия)
+    }
+
+    function calculateAdvancedHappiness() {
+      const ageInput = parseInt(document.getElementById('age').value) || 25;
+      const incomeCategory = document.getElementById('income').value;
+      const hasPartner = document.querySelector('input[name="partner"]:checked').value === 'yes';
+
+      // 1. Базовый расчет по возрасту (индивидуально для каждого года)
+      let score = getAgeCoefficient(ageInput);
+
+      // 2. Добавление коэффициента дохода (логарифмическая шкала насыщения)
+      const incomeCoeffs = {
+        'under_10k': -1.2,
+        '10k_50k': 0.0,
+        '50k_100k': +1.1,
+        '100k_200k': +1.6,
+        'over_200k': +2.0
+      };
+      score += incomeCoeffs[incomeCategory] || 0;
+
+      // 3. Добавление коэффициента партнера
+      if (hasPartner) {
+        score += 1.4; // Значимая прибавка за счет социальной поддержки
+      } else {
+        score -= 0.6; // Штраф за изоляцию или отсутствие стабильного союза
+      }
+
+      // Строгое ограничение диапазона от 1.0 до 10.0
+      if (score > 10.0) score = 10.0;
+      if (score < 1.0) score = 1.0;
+
+      const finalScore = score.toFixed(1);
+      document.getElementById('happiness_score').value = finalScore;
+
+      // Текстовая расшифровка уровня дохода для вывода
+      const incomeNames = {
+        'under_10k': 'менее 10 000 $ в год',
+        '10k_50k': 'от 10 000 $ до 50 000 $ в год',
+        '50k_100k': 'от 50 000 $ до 100 000 $ в год',
+        '100k_200k': 'от 100 000 $ до 200 000 $ в год',
+        'over_200k': 'свыше 200 000 $ в год'
+      };
+
+      const resultBox = document.getElementById('result-box');
+      const resultText = document.getElementById('result-text');
+
+      resultBox.style.display = 'block';
+      resultText.innerHTML = `Для возраста <strong>${ageInput} лет</strong>, при уровне дохода <strong>${incomeNames[incomeCategory]}</strong> и статусе отношений «<strong>${hasPartner ? 'есть партнер' : 'нет партнера'}</strong>», рассчитанный комплексный индекс счастья составляет <strong>${finalScore} из 10</strong>.`;
+    }
+    document.getElementById('survey_date').value = new Date().toISOString().slice(0, 10);
+
+document.getElementById('happyForm').addEventListener('submit', async function (e) {
+  e.preventDefault();
+  calculateAdvancedHappiness();                 // пересчитать и обновить hidden-поле
+  const status = document.getElementById('happy-status');
+  try {
+    const response = await fetch('https://httpbin.org/post', {
+      method: 'POST',
+      body: new FormData(this)                  // уйдут все поля с name, включая значения по умолчанию
+    });
+    if (!response.ok) throw new Error('HTTP ' + response.status);
+    status.textContent = 'Данные отправлены на сервер.';
+  } catch (err) {
+    status.textContent = 'Не удалось отправить данные.';
+  }
+});
+  </script>
+
+</body>
+
+</html>
